@@ -1,0 +1,319 @@
+# Blender 초보 강좌 7강
+
+> Texturing 1 — Material · Base Color · Metallic · Roughness
+
+---
+
+## 🎯 이번 강의 핵심
+
+모델링한 컵과 접시에 **Material(재질)** 을 적용해서
+회색 모델을 실제 물체처럼 보이게 만든다.
+
+```text
+모델링
+→ 크기 조정
+→ 바닥 만들기
+→ Material 생성
+→ 색상 / 금속성 / 거칠기 설정
+```
+
+---
+
+## 📏 오브젝트 실제 크기 확인
+
+`N` 키를 누르면 뷰포트 오른쪽에 메뉴가 열린다.
+
+```text
+N
+→ Item
+→ Dimensions
+```
+
+`Dimensions`에서는 오브젝트의 실제 크기를 미터 단위로 확인할 수 있다.
+
+예시:
+
+```text
+머그컵 높이 약 10cm
+= 0.1m 정도
+```
+
+> 모델링한 컵이 높이 3m처럼 너무 크면
+> 이후 조명, 카메라, 물리 설정에서 불편할 수 있다.
+
+---
+
+## 🟩 바닥 만들기
+
+컵과 접시가 공중에 떠 있지 않도록 바닥을 만든다.
+
+```text
+Object Mode
+→ Shift + A
+→ Mesh
+→ Plane
+```
+
+Plane은 평평한 바닥 역할을 한다.
+
+---
+
+## 🧲 Snap으로 바닥에 붙이기
+
+뷰포트 위쪽의 **자석 아이콘**은 Snap 기능이다.
+
+```text
+자석 아이콘 활성화
+→ 옆의 ▼ 메뉴 열기
+→ Face 선택
+```
+
+이후 오브젝트를 움직이면 Plane 같은 면 위로 맞추기 쉬워진다.
+
+| Snap 종류   | 기능           |
+| --------- | ------------ |
+| Increment | 일정 간격 단위로 이동 |
+| Vertex    | 점에 맞춰 이동     |
+| Edge      | 선에 맞춰 이동     |
+| Face      | 면 위에 맞춰 이동   |
+
+> 컵이나 접시를 바닥 Plane 위에 올릴 때는 보통 `Face Snap`을 사용한다.
+
+---
+
+## 🌑 Rendered Mode
+
+실제 조명과 그림자가 적용된 상태로 화면을 보는 모드.
+
+```text
+Z + Numpad 8
+```
+
+| Shading Mode     | 단축키            |
+| ---------------- | -------------- |
+| Wireframe        | `Z + Numpad 4` |
+| Solid            | `Z + Numpad 6` |
+| Material Preview | `Z + Numpad 2` |
+| Rendered         | `Z + Numpad 8` |
+
+> Rendered Mode에서는 재질, 조명, 그림자가 실제 렌더 결과와 비슷하게 보인다.
+
+---
+
+# 🎨 Material이란?
+
+**Material = 물체 표면의 재질 설정**
+
+예를 들면:
+
+* 컵의 도자기 재질
+* 금속 숟가락
+* 나무 테이블
+* 유리창
+* 플라스틱 장난감
+
+Material이 없으면 오브젝트는 기본 회색으로 보인다.
+
+---
+
+## ➕ Material 만들기
+
+```text
+오브젝트 선택
+→ Properties Editor
+→ Material Properties 아이콘
+→ New
+```
+
+Material을 만들었다면 이름을 알아보기 쉽게 바꾼다.
+
+```text
+Cup
+Dish
+Table
+```
+
+---
+
+## 🎛️ 가장 중요한 Material 설정 3개
+
+| 항목         | 의미               |
+| ---------- | ---------------- |
+| Base Color | 기본 색상            |
+| Metallic   | 금속 재질 정도         |
+| Roughness  | 표면의 거칠기 / 반사 선명도 |
+
+---
+
+## 🌈 Base Color
+
+오브젝트의 기본 색상.
+
+```text
+Base Color
+→ 원하는 색 선택
+```
+
+예시:
+
+```text
+주황색 머그컵
+흰색 접시
+갈색 테이블
+```
+
+---
+
+## 🔩 Metallic
+
+물체가 금속처럼 보이는 정도.
+
+| 값   | 의미  |
+| --- | --- |
+| `0` | 비금속 |
+| `1` | 금속  |
+
+예시:
+
+```text
+도자기 컵 = Metallic 0
+나무 테이블 = Metallic 0
+철 숟가락 = Metallic 1
+알루미늄 캔 = Metallic 1
+```
+
+> 대부분의 물체는 금속 또는 비금속이므로
+> 보통 `0` 아니면 `1`을 사용한다.
+
+---
+
+## ✨ Roughness
+
+표면이 거친지, 매끈한지를 결정한다.
+
+| 값        | 표면 느낌        |
+| -------- | ------------ |
+| `0`에 가까움 | 매끈함, 반사가 선명함 |
+| `1`에 가까움 | 거침, 반사가 흐림   |
+
+예시:
+
+```text
+거울 = Roughness 0에 가까움
+도자기 컵 = Roughness 약 0.3
+종이 = Roughness 높음
+거친 콘크리트 = Roughness 높음
+```
+
+> Roughness가 낮을수록 빛이 또렷하게 반사되어 광택이 강해 보인다.
+
+---
+
+## ☕ 머그컵 Material 예시
+
+```text
+Base Color = 원하는 컵 색상
+Metallic = 0
+Roughness = 0.3 정도
+```
+
+머그컵은 도자기 재질이므로 금속이 아니다.
+
+```text
+Metallic = 0
+```
+
+그리고 적당히 매끄러운 표면이므로 Roughness를 너무 높게 주지 않는다.
+
+---
+
+## 🍽️ 기존 Material 재사용하기
+
+컵에 만든 Material을 접시에도 적용할 수 있다.
+
+```text
+접시 선택
+→ Material Properties
+→ Material 선택 목록
+→ Cup Material 선택
+```
+
+처음에는 컵과 접시가 같은 Material을 공유한다.
+
+```text
+Cup Material
+→ Cup
+→ Dish
+```
+
+그래서 접시의 색을 바꾸면 컵 색도 같이 바뀔 수 있다.
+
+---
+
+## 📄 Material 복제하기
+
+Material 이름 옆에 숫자가 보이면
+그 Material을 공유 중인 오브젝트 개수다.
+
+```text
+Cup  2
+```
+
+뜻:
+
+```text
+Cup Material을
+컵과 접시가 같이 사용 중
+```
+
+숫자를 클릭하면 Material이 복제된다.
+
+```text
+Cup
+→ Cup.001
+```
+
+그다음 이름을 바꾼다.
+
+```text
+Cup.001
+→ Dish
+```
+
+이제 접시 색을 바꿔도 컵에는 영향을 주지 않는다.
+
+---
+
+## ✅ 핵심 요약
+
+```text
+N → Item → Dimensions
+= 오브젝트 실제 크기 확인
+
+Shift + A → Mesh → Plane
+= 바닥 만들기
+
+Snap → Face
+= 바닥 면 위로 오브젝트 맞추기
+
+Z + Numpad 8
+= Rendered Mode
+
+Material Properties → New
+= 새 Material 생성
+```
+
+```text
+Base Color = 기본 색상
+Metallic   = 금속 여부
+Roughness  = 거칠기 / 광택 정도
+```
+
+```text
+도자기 컵
+Metallic = 0
+Roughness = 약 0.3
+```
+
+> **Material은 색만 정하는 기능이 아니라,
+> 물체가 금속인지·매끈한지·거친지까지 결정하는 재질 설정이다.**
