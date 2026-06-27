@@ -1,0 +1,189 @@
+# Blender 초보 강좌 6강
+
+> Modifier · Subdivision Surface · Shade Smooth
+
+---
+
+## 🎯 이번 강의 핵심
+
+모델링을 할 때 처음부터 점과 선을 너무 많이 만들지 말고,
+
+```text
+간단하게 기본 형태 모델링
+→ Modifier로 부드럽게 만들기
+→ 필요한 부분만 Loop Cut으로 보정
+```
+
+하는 방식이 효율적이다.
+
+---
+
+## 🧩 Modifier란?
+
+**원래 모델을 직접 망가뜨리지 않고, 추가 효과를 적용하는 기능.**
+
+위치:
+
+```text
+Properties Editor
+→ 🔧 스패너 아이콘
+→ Add Modifier
+```
+
+Modifier를 사용하면 원래 모델의 점·선·면은 그대로 두고도
+부드럽게 만들기, 반복하기, 대칭 만들기 같은 효과를 줄 수 있다.
+
+> Modifier는 기본적으로 **Non-Destructive(비파괴적)** 방식이다.
+> 즉, 언제든 끄거나 삭제할 수 있다.
+
+---
+
+## ✨ Subdivision Surface
+
+이번 강의에서 사용한 Modifier.
+
+```text
+Subdivision Surface
+= Subsurf
+```
+
+적은 점·선·면으로 만든 각진 모델을 더 촘촘하게 나누고 부드럽게 만든다.
+
+### 추가 방법
+
+```text
+Object Mode에서 오브젝트 선택
+→ Properties
+→ 🔧 Modifier
+→ Add Modifier
+→ Subdivision Surface
+```
+
+빠르게 추가:
+
+```text
+Ctrl + 1 = Subsurf Level 1
+Ctrl + 2 = Subsurf Level 2
+```
+
+> `Ctrl + 숫자키`는 보통 키보드 윗줄 숫자를 사용한다.
+
+---
+
+## 🔢 Levels Viewport / Render
+
+| 항목                  | 의미                     |
+| ------------------- | ---------------------- |
+| **Levels Viewport** | 작업 화면에서 보이는 Subsurf 단계 |
+| **Render**          | 최종 렌더링할 때 적용되는 단계      |
+
+예시:
+
+```text
+Viewport 2
+Render 2
+```
+
+작업 화면과 최종 렌더 결과가 비슷하게 보이게 하려면
+보통 두 값을 같게 둔다.
+
+### 주의
+
+값이 높을수록 더 매끈해지지만:
+
+* 점·선·면 수가 급격히 많아짐
+* 블렌더가 무거워짐
+* 작업 속도가 느려짐
+
+> 보통 간단한 컵 같은 오브젝트는 `Level 1~2` 정도면 충분하다.
+
+---
+
+## 🖌️ Shade Smooth
+
+Subsurf를 넣은 뒤에도 표면이 거칠어 보일 수 있다.
+
+```text
+Object Mode
+→ 오브젝트 우클릭
+→ Shade Smooth
+```
+
+그러면 빛이 표면에서 더 자연스럽게 이어져 보여서 매끈해진다.
+
+```text
+Subdivision Surface = 형태 자체를 부드럽게 나눔
+Shade Smooth        = 표면이 부드럽게 보이도록 처리
+```
+
+둘을 같이 쓰면 효과가 좋다.
+
+---
+
+## ⚠️ Subsurf를 넣었더니 모양이 뭉개질 때
+
+Subdivision Surface는 오브젝트의 모서리와 형태를 전체적으로 둥글게 만든다.
+
+그래서 컵 바닥, 컵 입구, 손잡이처럼
+**각을 어느 정도 유지해야 하는 부분**까지 둥글게 뭉개질 수 있다.
+
+이때는 필요한 위치에 Loop Cut을 추가한다.
+
+```text
+Edit Mode
+→ Ctrl + R
+→ 모양을 잡고 싶은 곳에 Loop Cut 추가
+```
+
+### 예시
+
+| 문제            | 해결                   |
+| ------------- | -------------------- |
+| 컵 바닥이 너무 둥글어짐 | 바닥 가까이에 Loop Cut 추가  |
+| 컵 입구가 뭉개짐     | 입구 주변에 Loop Cut 추가   |
+| 손잡이가 너무 둥글어짐  | 손잡이에 Loop Cut 추가     |
+| 바닥이 쭈글쭈글함     | 바닥 면 선택 → `I`로 Inset |
+
+> Loop Cut은 Subsurf가 지나치게 둥글게 만드는 것을 잡아주는 **지지선(Support Loop)** 역할을 한다.
+
+---
+
+## 🍽️ 접시 모델링 복습
+
+접시를 만들 때의 기본 흐름:
+
+```text
+Cylinder 생성
+→ S + Z로 납작하게 만들기
+→ Edit Mode
+→ 아랫면 선택 후 S로 줄이기
+→ 윗면 선택
+→ I로 Inset
+→ E로 아래로 Extrude
+→ 안쪽 아랫면을 S로 넓혀 완만한 경사 만들기
+→ Ctrl + R로 필요한 디테일 추가
+```
+
+---
+
+## ✅ 핵심 요약
+
+```text
+Modifier
+= 원래 모델을 직접 바꾸지 않고 효과를 추가하는 기능
+
+Subdivision Surface
+= 적은 점·선·면을 부드럽고 촘촘하게 보이게 함
+
+Ctrl + 1 / Ctrl + 2
+= Subsurf Level 1 / 2 빠르게 추가
+
+Shade Smooth
+= 표면이 매끈하게 보이도록 처리
+
+Ctrl + R
+= Subsurf 때문에 뭉개진 모양을 다시 잡는 Loop Cut
+```
+
+> **모델링은 점을 많이 넣는 것이 아니라,
+> 필요한 곳에만 점을 추가하고 Modifier로 형태를 부드럽게 만드는 과정이다.**
