@@ -1,0 +1,273 @@
+# Blender 초보 강좌 8강
+
+> Texturing 2 — PBR Texture · Shader Editor · UV Unwrap
+
+---
+
+## 🎯 이번 강의 핵심
+
+PBR 텍스처는 색상 이미지 한 장만 넣는 것이 아니라,
+
+```text
+Color Map
++ Roughness Map
++ Normal Map
+```
+
+처럼 여러 이미지를 연결해서 재질의 색, 광택, 요철을 표현하는 방식이다.
+
+---
+
+## 🧱 PBR이란?
+
+```text
+PBR = Physically Based Rendering
+= 물리 기반 렌더링
+```
+
+빛이 재질 표면에서 어떻게 반사되는지 현실과 비슷하게 계산하는 방식이다.
+
+평평한 Plane에도 나무 텍스처를 적용하면 나무결, 광택, 미세한 요철이 있는 것처럼 보이게 할 수 있다.
+
+---
+
+## 🗂️ PBR Texture Map 종류
+
+| 맵                | 역할                | 연결 위치        |
+| ---------------- | ----------------- | ------------ |
+| Color Map        | 재질의 색상과 무늬        | Base Color   |
+| Roughness Map    | 표면 거칠기와 반사 정도     | Roughness    |
+| Normal Map       | 빛 반응으로 미세한 요철 표현  | Normal       |
+| Displacement Map | 실제 메쉬를 변형하는 높이 정보 | Displacement |
+
+```text
+Color Map      = 색과 무늬
+Roughness Map  = 광택 정도
+Normal Map     = 울퉁불퉁해 보이는 표면
+Displacement   = 실제 표면 높낮이 변형
+```
+
+> 일반적인 나무, 돌, 벽 재질은
+> `Color + Roughness + Normal`만 적용해도 충분하다.
+
+---
+
+## 🧩 Shader Editor
+
+상단 Workspace에서:
+
+```text
+Shading
+```
+
+으로 이동하면 아래쪽에 Shader Editor가 나온다.
+
+기본 연결:
+
+```text
+Principled BSDF
+→ Material Output
+```
+
+Principled BSDF가 Material의 색, 거칠기, 금속성, 노말 등을 담당한다.
+
+---
+
+## 🎨 Color Map 적용
+
+```text
+Shift + A
+→ Texture
+→ Image Texture
+```
+
+Color Map 이미지를 불러온 뒤 연결한다.
+
+```text
+Image Texture Color
+→ Principled BSDF Base Color
+```
+
+---
+
+## 🗺️ UV Unwrap
+
+텍스처 크기나 방향이 이상하면 UV를 조절한다.
+
+```text
+Object 선택
+→ Tab
+→ A
+→ U
+→ Unwrap Angle Based
+```
+
+> 최신 Blender에서는 Unwrap이 여러 방식으로 나뉘어 있다.
+> 지금처럼 Plane, 책상, 단순한 물체는 `Unwrap Angle Based`를 선택하면 된다.
+
+UV Editor에서:
+
+```text
+G = UV 이동
+R = UV 회전
+S = UV 크기 조절
+```
+
+```text
+UV를 크게
+= 텍스처 무늬가 작게 반복됨
+
+UV를 작게
+= 텍스처 무늬가 크게 보임
+```
+
+---
+
+## ✨ Roughness Map 적용
+
+```text
+Image Texture 노드 복제
+→ Roughness Map 불러오기
+→ Color Space를 Non-Color로 변경
+```
+
+연결:
+
+```text
+Roughness Map Color
+→ Principled BSDF Roughness
+```
+
+```text
+sRGB
+= 색상용 이미지
+
+Non-Color
+= Roughness / Normal / Height 같은 데이터용 이미지
+```
+
+---
+
+## 🪨 Normal Map 적용
+
+Normal Map은 실제 메쉬를 크게 변형하지 않고도
+빛 반응을 이용해 표면이 울퉁불퉁한 것처럼 보이게 한다.
+
+### 1. Normal Map 이미지 불러오기
+
+```text
+Image Texture 노드 복제
+→ Normal Map 이미지 불러오기
+→ Color Space를 Non-Color로 변경
+```
+
+> OpenGL Normal Map을 사용한다.
+
+---
+
+### 2. Normal Map 노드 생성
+
+최신 Blender 기준:
+
+```text
+Shift + A
+→ Displacement
+→ Normal Map
+```
+
+또는 더 빠르게:
+
+```text
+Shift + A
+→ 검색창에 Normal Map 입력
+```
+
+> 예전 강의와 달리 `Vector` 메뉴가 아니라
+> **Displacement 메뉴 안에 Normal Map 노드가 있다.**
+
+---
+
+### 3. 노드 연결
+
+```text
+Normal Texture Color
+→ Normal Map Node Color
+
+Normal Map Node Normal
+→ Principled BSDF Normal
+```
+
+정리:
+
+```text
+Normal Map 이미지
+→ Normal Map 노드
+→ Principled BSDF의 Normal
+```
+
+`Strength` 값으로 요철 강도를 조절할 수 있다.
+
+```text
+Strength 낮음
+= 약한 요철
+
+Strength 높음
+= 강한 요철
+```
+
+---
+
+## ⚠️ Bump와 Normal Map 차이
+
+| 종류            | 사용하는 이미지               |
+| ------------- | ---------------------- |
+| Normal Map 노드 | 파란색/보라색 RGB Normal Map |
+| Bump 노드       | 흑백 Height Map          |
+
+```text
+파란색 Normal Map
+→ Normal Map 노드 사용
+
+흑백 Height Map
+→ Bump 노드 사용
+```
+
+---
+
+## ✅ 기본 PBR 노드 연결
+
+```text
+Color Map
+→ Principled BSDF Base Color
+
+Roughness Map (Non-Color)
+→ Principled BSDF Roughness
+
+Normal Map (Non-Color)
+→ Normal Map Node
+→ Principled BSDF Normal
+```
+
+---
+
+## 📌 핵심 요약
+
+```text
+PBR Texture
+= 색 + 반사 + 요철 정보를 함께 사용하는 재질 방식
+
+U → Unwrap Angle Based
+= 최신 Blender에서 기본 UV Unwrap 선택
+
+Roughness Map
+= Non-Color
+→ Roughness
+
+Normal Map
+= Non-Color
+→ Displacement → Normal Map
+→ Principled BSDF Normal
+```
+
+> **파란색 Normal Map은 Bump에 바로 연결하는 게 아니라,
+> Normal Map 노드를 거쳐 Principled BSDF의 Normal에 연결한다.**
